@@ -2,6 +2,7 @@ import { useState,useEffect } from 'react';
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import Link from 'next/link'
+import { motion } from 'framer-motion';
 
 const defaultEndpoint = `https://rickandmortyapi.com/api/character/`;
 
@@ -84,12 +85,27 @@ function handleOnSubmitSearch(e) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
+      
+      <main>
+      <motion.div initial="hidden" animate="visible" variants={{
+        hidden: {
+          scale: .8,
+          opacity: 0
+        },
+        visible: {
+          scale: 1,
+          opacity: 1,
+          transition: {
+            delay: .4
+          }
+        },
+      }}>
+        <h1 className="title">
          Wubba Lubba Dub dub !
         </h1>
+      </motion.div>
 
-        <p className={styles.description}>
+        <p className="description">
          Rick and Morty Wiki
         </p>
 
@@ -102,14 +118,29 @@ function handleOnSubmitSearch(e) {
         {results.map(result => {
         const { id, name, image } =  result;
         return (
-        <div key={id} className="card">
+        <motion.div key={id} className="card" whileHover={{
+          position: 'relative',
+          zIndex: 1,
+          // background:'white',
+          scale: [1, 2, 1.5, 2],
+          rotate: [0, 5, -5, 0],
+          filter: [
+            'hue-rotate(10) contrast(100%)',
+            'hue-rotate(360deg) contrast(200%)',
+            'hue-rotate(45deg) contrast(300%)',
+            'hue-rotate(10) contrast(100%)'
+          ],
+          transition: {
+            duration: .2
+          }
+        }}>
       <Link href="/character/[id]"as={`/character/${id}`}>
         <a>
         <img src={image} alt={`${name} Thumbnail`} />
         <h3>{ name }</h3>
         </a>
       </Link>
-      </div>
+      </motion.div>
     )
   })}
 </div>
